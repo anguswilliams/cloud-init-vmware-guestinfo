@@ -1,4 +1,8 @@
-/rpmbuild/
+/rpmbuild
+/target/
+/requirements/
+/venv/
+/.idea/
 /test.py
 /net.1.config
 /metadata.json

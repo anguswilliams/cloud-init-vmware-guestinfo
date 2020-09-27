@@ -1,0 +1,63 @@
+---
+name: Build RPM and DEBs
+on: push
+
+jobs:
+  build_deb_bionic:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependancies
+        run: |
+          apt-get update
+          apt-get install -y ruby ruby-dev rubygems build-essential
+          gem install --no-document fpm
+      - name: Build package
+        run: |
+          make deb-bionic
+  build_deb_focal:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependancies
+        run: |
+          apt-get update
+          apt-get install -y ruby ruby-dev rubygems build-essential
+          gem install --no-document fpm
+      - name: Build package
+        run: |
+          make deb-focal
+  build_rpm_el7:
+    runs-on: ubuntu-latest
+    container:
+      image: centos:8 # build package in CentOS 8, 7 doesn't have new enough ruby
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependancies
+        run: |
+          yum install -y ruby-devel gcc make rpm-build rubygems
+          gem install --no-document fpm
+      - name: Build package
+        run: |
+          make rpm-el7
+  build_rpm_el8:
+    runs-on: ubuntu-latest
+    container:
+      image: centos:8
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependancies
+        run: |
+          yum install -y ruby-devel gcc make rpm-build rubygems
+          gem install --no-document fpm
+      - name: Build package
+        run: |
+          make rpm-el8
